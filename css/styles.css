@@ -1,5 +1,5 @@
 :root {
-  --blue-color: rgba(0, 0, 255, 0.692);
+  --blue-color: rgb(96, 96, 255);
   --light-blue-color: rgb(92, 157, 255);
 }
 
@@ -8,6 +8,9 @@ body {
 }
 
 .header {
+  position: sticky;
+  top: 0;
+  z-index: 99;
   background-color: var(--blue-color);
 }
 
@@ -38,4 +41,46 @@ body {
   border-radius: 2px;
   padding: 8px;
   cursor: pointer;
+}
+
+.image-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.photo-card {
+  box-shadow: 0 0.5px 2px 0.5px rgba(0, 0, 0, 0.26);
+  border-radius: 2px;
+}
+
+.image-item {
+  flex: 1 0 21%;
+  margin: 5px;
+  width: 90%;
+}
+
+.info {
+  display: flex;
+  justify-content: space-around;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.label {
+  font-size: 18px;
+  margin-top: 0.4rem;
+}
+
+.value {
+  margin-top: 0.2rem;
+  margin-bottom: 0.5rem;
+  font-size: 18px;
 }
