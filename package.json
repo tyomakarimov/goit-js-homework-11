@@ -1,0 +1,26 @@
+{
+  "name": "goit-js-hw-11",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "parcel index.html",
+    "build": "parcel build *.html --public-url /goit-js-hw-11/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tyomakarimov/goit-js-hw-11.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tyomakarimov/goit-js-hw-11/issues"
+  },
+  "homepage": "https://tyomakarimov.github.io/goit-js-hw-11",
+  "dependencies": {
+    "axios": "^0.24.0",
+    "parcel-bundler": "^1.12.5"
+  }
+}
