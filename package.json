@@ -21,6 +21,7 @@
   "homepage": "https://tyomakarimov.github.io/goit-js-hw-11",
   "dependencies": {
     "axios": "^0.24.0",
+    "notiflix": "^3.2.2",
     "parcel-bundler": "^1.12.5"
   }
 }
