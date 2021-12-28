@@ -117,7 +117,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"notiflix/notiflix-aio-3.2.2.min.js":[function(require,module,exports) {
+})({"notiflix-aio-3.2.2.min.js":[function(require,module,exports) {
 var define;
 var global = arguments[3];
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
@@ -985,7 +985,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58054" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49255" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
@@ -1161,5 +1161,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["../node_modules/parcel-bundler/src/builtins/hmr-runtime.js","notiflix/notiflix-aio-3.2.2.min.js"], null)
-//# sourceMappingURL=/notiflix-aio-3.2.2.min.7b7db2a1.js.map
+},{}]},{},["../node_modules/parcel-bundler/src/builtins/hmr-runtime.js","notiflix-aio-3.2.2.min.js"], null)
+//# sourceMappingURL=/notiflix-aio-3.2.2.min.11a917c6.js.map

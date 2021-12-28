@@ -3563,11 +3563,17 @@ module.exports = require('./lib/axios');
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.getImages = exports.getBlobData = void 0;
+exports.getImages = exports.getBlobArray = void 0;
 
 var _axios = _interopRequireDefault(require("axios"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
@@ -3607,24 +3613,39 @@ var getImages = /*#__PURE__*/function () {
 
 exports.getImages = getImages;
 
-var getBlobData = /*#__PURE__*/function () {
-  var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(url) {
-    var response, blob;
+var getBlobArray = /*#__PURE__*/function () {
+  var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(array) {
+    var images, _iterator, _step, value, blobData;
+
     return regeneratorRuntime.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
-            _context2.next = 2;
-            return _axios.default.get(url, {
-              responseType: 'blob'
-            });
+            images = [];
+            console.log(array);
+            _iterator = _createForOfIteratorHelper(array);
 
-          case 2:
-            response = _context2.sent;
-            blob = response.data;
-            return _context2.abrupt("return", blob);
+            try {
+              for (_iterator.s(); !(_step = _iterator.n()).done;) {
+                value = _step.value;
+                images.push(_axios.default.get(value, {
+                  responseType: 'blob'
+                }));
+              }
+            } catch (err) {
+              _iterator.e(err);
+            } finally {
+              _iterator.f();
+            }
 
-          case 5:
+            _context2.next = 6;
+            return _axios.default.all(images);
+
+          case 6:
+            blobData = _context2.sent;
+            return _context2.abrupt("return", blobData);
+
+          case 8:
           case "end":
             return _context2.stop();
         }
@@ -3632,12 +3653,12 @@ var getBlobData = /*#__PURE__*/function () {
     }, _callee2);
   }));
 
-  return function getBlobData(_x2) {
+  return function getBlobArray(_x2) {
     return _ref2.apply(this, arguments);
   };
 }();
 
-exports.getBlobData = getBlobData;
+exports.getBlobArray = getBlobArray;
 },{"axios":"../node_modules/axios/index.js"}],"helpers/image-item-template.js":[function(require,module,exports) {
 "use strict";
 
@@ -3657,7 +3678,56 @@ var getImageItem = function getImageItem(url, details) {
 
 var _default = getImageItem;
 exports.default = _default;
-},{}],"index.js":[function(require,module,exports) {
+},{}],"helpers/image.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _apiHelper = require("../api/api-helper");
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+var getImagesUrls = /*#__PURE__*/function () {
+  var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(array) {
+    var images, blobArray, urls;
+    return regeneratorRuntime.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            images = array.map(function (value) {
+              return value.webformatURL;
+            });
+            _context.next = 3;
+            return (0, _apiHelper.getBlobArray)(images);
+
+          case 3:
+            blobArray = _context.sent;
+            urls = blobArray.map(function (value) {
+              return URL.createObjectURL(value.data);
+            });
+            return _context.abrupt("return", urls);
+
+          case 6:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  }));
+
+  return function getImagesUrls(_x) {
+    return _ref.apply(this, arguments);
+  };
+}();
+
+var _default = getImagesUrls;
+exports.default = _default;
+},{"../api/api-helper":"api/api-helper.js"}],"index.js":[function(require,module,exports) {
 'use strict';
 
 require("regenerator-runtime/runtime");
@@ -3668,13 +3738,9 @@ var _apiHelper = require("./api/api-helper.js");
 
 var _imageItemTemplate = _interopRequireDefault(require("./helpers/image-item-template.js"));
 
+var _image = _interopRequireDefault(require("./helpers/image.js"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
@@ -3695,8 +3761,7 @@ submitButton.addEventListener('click', function () {
 
 var submitHandler = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(event) {
-    var searchPhrase, images, _iterator, _step, image, blob, url;
-
+    var searchPhrase, images, hits, urls, i;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -3704,15 +3769,28 @@ var submitHandler = /*#__PURE__*/function () {
             event.preventDefault();
             loadMoreButton.style.display = 'none';
             searchPhrase = input.value;
-            _context.next = 5;
+
+            if (searchPhrase) {
+              _context.next = 6;
+              break;
+            }
+
+            _notiflixNotifyAio.Notify.failure('The input cannot be empty. Please, type in what images you want to find.');
+
+            return _context.abrupt("return");
+
+          case 6:
+            _context.next = 8;
             return (0, _apiHelper.getImages)(searchPhrase, loadMoreButtonDetails.page);
 
-          case 5:
+          case 8:
             images = _context.sent;
 
             if (loadMoreButtonDetails.page === 1) {
               galleryList.innerHTML = '';
-              if (images.hits.length) _notiflixNotifyAio.Notify.success("Hooray! We found ".concat(images.totalHits, " images."));else _notiflixNotifyAio.Notify.failure('Sorry, there are no images matching your search query. Please try again.');
+              if (images.hits.length) _notiflixNotifyAio.Notify.success("Hooray! We found ".concat(images.totalHits, " images."));else {
+                _notiflixNotifyAio.Notify.failure('Sorry, there are no images matching your search query. Please, try again.');
+              }
             } else {
               if (!images.hits.length) {
                 _notiflixNotifyAio.Notify.failure("We're sorry, but you've reached the end of search results.");
@@ -3720,56 +3798,25 @@ var submitHandler = /*#__PURE__*/function () {
             }
 
             loadMoreButtonDetails.page++;
-            _iterator = _createForOfIteratorHelper(images.hits);
-            _context.prev = 9;
+            hits = images.hits;
+            _context.next = 14;
+            return (0, _image.default)(hits);
 
-            _iterator.s();
+          case 14:
+            urls = _context.sent;
 
-          case 11:
-            if ((_step = _iterator.n()).done) {
-              _context.next = 20;
-              break;
+            for (i = 0; i < hits.length; i++) {
+              galleryList.innerHTML += (0, _imageItemTemplate.default)(urls[i], hits[i]);
             }
 
-            image = _step.value;
-            _context.next = 15;
-            return (0, _apiHelper.getBlobData)(image.webformatURL);
-
-          case 15:
-            blob = _context.sent;
-            url = URL.createObjectURL(blob);
-            galleryList.innerHTML += (0, _imageItemTemplate.default)(url, image);
-
-          case 18:
-            _context.next = 11;
-            break;
-
-          case 20:
-            _context.next = 25;
-            break;
-
-          case 22:
-            _context.prev = 22;
-            _context.t0 = _context["catch"](9);
-
-            _iterator.e(_context.t0);
-
-          case 25:
-            _context.prev = 25;
-
-            _iterator.f();
-
-            return _context.finish(25);
-
-          case 28:
             if (images.hits.length) loadMoreButton.style.display = 'block';
 
-          case 29:
+          case 17:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[9, 22, 25, 28]]);
+    }, _callee);
   }));
 
   return function submitHandler(_x) {
@@ -3779,7 +3826,7 @@ var submitHandler = /*#__PURE__*/function () {
 
 loadMoreButton.addEventListener('click', submitHandler);
 form.addEventListener('submit', submitHandler);
-},{"regenerator-runtime/runtime":"../node_modules/regenerator-runtime/runtime.js","notiflix/build/notiflix-notify-aio":"../node_modules/notiflix/build/notiflix-notify-aio.js","./api/api-helper.js":"api/api-helper.js","./helpers/image-item-template.js":"helpers/image-item-template.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"regenerator-runtime/runtime":"../node_modules/regenerator-runtime/runtime.js","notiflix/build/notiflix-notify-aio":"../node_modules/notiflix/build/notiflix-notify-aio.js","./api/api-helper.js":"api/api-helper.js","./helpers/image-item-template.js":"helpers/image-item-template.js","./helpers/image.js":"helpers/image.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -3807,7 +3854,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58054" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49255" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
