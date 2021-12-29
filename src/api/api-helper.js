@@ -13,7 +13,6 @@ export const getImages = async (searchPhrase, page = 1) => {
 
 export const getBlobArray = async array => {
   const images = [];
-  console.log(array);
   for (const value of array) {
     images.push(
       axios.get(value, {
