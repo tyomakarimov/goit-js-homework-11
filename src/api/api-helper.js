@@ -11,10 +11,16 @@ export const getImages = async (searchPhrase, page = 1) => {
   return response.data;
 };
 
-export const getBlobData = async url => {
-  const response = await axios.get(url, {
-    responseType: 'blob',
-  });
-  const blob = response.data;
-  return blob;
+export const getBlobArray = async array => {
+  const images = [];
+  console.log(array);
+  for (const value of array) {
+    images.push(
+      axios.get(value, {
+        responseType: 'blob',
+      })
+    );
+  }
+  const blobData = await axios.all(images);
+  return blobData;
 };
