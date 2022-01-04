@@ -5,7 +5,7 @@ import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
 import { getImages } from './api/api-helper.js';
 import getImageItem from './helpers/image-item-template.js';
-import getImagesUrls from './helpers/image.js';
+import { PER_PAGE } from './constants';
 
 const form = document.getElementById('search-form');
 const submitButton = document.getElementById('submit-button');
@@ -18,7 +18,13 @@ const loadMoreButtonDetails = {
   page: 1,
 };
 
-submitButton.addEventListener('click', () => (loadMoreButtonDetails.page = 1));
+submitButton.addEventListener('keydown', event => {
+  if (event.key === ' ') event.preventDefault();
+});
+
+submitButton.addEventListener('click', () => {
+  loadMoreButtonDetails.page = 1;
+});
 
 const submitHandler = async event => {
   event.preventDefault();
@@ -42,11 +48,8 @@ const submitHandler = async event => {
   }
   loadMoreButtonDetails.page++;
   const { hits } = images;
-  const urls = await getImagesUrls(hits);
-  for (let i = 0; i < hits.length; i++) {
-    galleryList.innerHTML += getImageItem(urls[i], hits[i]);
-  }
-  if (images.hits.length) loadMoreButton.style.display = 'block';
+  hits.forEach(value => (galleryList.innerHTML += getImageItem(value)));
+  if (images.hits.length === PER_PAGE) loadMoreButton.style.display = 'block';
 };
 
 loadMoreButton.addEventListener('click', submitHandler);

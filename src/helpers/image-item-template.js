@@ -1,9 +1,9 @@
-const getImageItem = (url, details) => {
-  const { tags, likes, views, comments, downloads } = details;
+const getImageItem = details => {
+  const { webformatURL, tags, likes, views, comments, downloads } = details;
   return `
     <li class="image-item">
       <div class="photo-card">
-        <img src="${url}" alt="${tags}" loading="lazy" width="369.8" height="254" />
+        <img src="${webformatURL}" alt="${tags}" loading="lazy" width="369.8" height="254" />
         <div class="info">
           <div class="info-item">
             <b class="label">Likes</b>
