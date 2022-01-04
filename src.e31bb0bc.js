@@ -3557,29 +3557,34 @@ module.exports.default = axios;
 
 },{"./utils":"../node_modules/axios/lib/utils.js","./helpers/bind":"../node_modules/axios/lib/helpers/bind.js","./core/Axios":"../node_modules/axios/lib/core/Axios.js","./core/mergeConfig":"../node_modules/axios/lib/core/mergeConfig.js","./defaults":"../node_modules/axios/lib/defaults.js","./cancel/Cancel":"../node_modules/axios/lib/cancel/Cancel.js","./cancel/CancelToken":"../node_modules/axios/lib/cancel/CancelToken.js","./cancel/isCancel":"../node_modules/axios/lib/cancel/isCancel.js","./env/data":"../node_modules/axios/lib/env/data.js","./helpers/spread":"../node_modules/axios/lib/helpers/spread.js","./helpers/isAxiosError":"../node_modules/axios/lib/helpers/isAxiosError.js"}],"../node_modules/axios/index.js":[function(require,module,exports) {
 module.exports = require('./lib/axios');
-},{"./lib/axios":"../node_modules/axios/lib/axios.js"}],"api/api-helper.js":[function(require,module,exports) {
+},{"./lib/axios":"../node_modules/axios/lib/axios.js"}],"constants/index.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.PER_PAGE = exports.API_URL = void 0;
+var API_URL = 'https://pixabay.com/api/?key=24986164-41561c298af901420416e8846';
+exports.API_URL = API_URL;
+var PER_PAGE = 40;
+exports.PER_PAGE = PER_PAGE;
+},{}],"api/api-helper.js":[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.getImages = exports.getBlobArray = void 0;
+exports.getImages = void 0;
 
 var _axios = _interopRequireDefault(require("axios"));
 
+var _constants = require("../constants");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
-
-var API_URL = 'https://pixabay.com/api/?key=24986164-41561c298af901420416e8846';
 
 var getImages = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(searchPhrase) {
@@ -3592,7 +3597,7 @@ var getImages = /*#__PURE__*/function () {
           case 0:
             page = _args.length > 1 && _args[1] !== undefined ? _args[1] : 1;
             _context.next = 3;
-            return _axios.default.get("".concat(API_URL, "&q=").concat(searchPhrase, "&image_type=photo&orientation=horizontal&safesearch=true&page=").concat(page, "&per_page=40"));
+            return _axios.default.get("".concat(_constants.API_URL, "&q=").concat(searchPhrase, "&image_type=photo&orientation=horizontal&safesearch=true&page=").concat(page, "&per_page=").concat(_constants.PER_PAGE));
 
           case 3:
             response = _context.sent;
@@ -3612,54 +3617,7 @@ var getImages = /*#__PURE__*/function () {
 }();
 
 exports.getImages = getImages;
-
-var getBlobArray = /*#__PURE__*/function () {
-  var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(array) {
-    var images, _iterator, _step, value, blobData;
-
-    return regeneratorRuntime.wrap(function _callee2$(_context2) {
-      while (1) {
-        switch (_context2.prev = _context2.next) {
-          case 0:
-            images = [];
-            console.log(array);
-            _iterator = _createForOfIteratorHelper(array);
-
-            try {
-              for (_iterator.s(); !(_step = _iterator.n()).done;) {
-                value = _step.value;
-                images.push(_axios.default.get(value, {
-                  responseType: 'blob'
-                }));
-              }
-            } catch (err) {
-              _iterator.e(err);
-            } finally {
-              _iterator.f();
-            }
-
-            _context2.next = 6;
-            return _axios.default.all(images);
-
-          case 6:
-            blobData = _context2.sent;
-            return _context2.abrupt("return", blobData);
-
-          case 8:
-          case "end":
-            return _context2.stop();
-        }
-      }
-    }, _callee2);
-  }));
-
-  return function getBlobArray(_x2) {
-    return _ref2.apply(this, arguments);
-  };
-}();
-
-exports.getBlobArray = getBlobArray;
-},{"axios":"../node_modules/axios/index.js"}],"helpers/image-item-template.js":[function(require,module,exports) {
+},{"axios":"../node_modules/axios/index.js","../constants":"constants/index.js"}],"helpers/image-item-template.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -3667,67 +3625,19 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var getImageItem = function getImageItem(url, details) {
-  var tags = details.tags,
+var getImageItem = function getImageItem(details) {
+  var webformatURL = details.webformatURL,
+      tags = details.tags,
       likes = details.likes,
       views = details.views,
       comments = details.comments,
       downloads = details.downloads;
-  return "\n    <li class=\"image-item\">\n      <div class=\"photo-card\">\n        <img src=\"".concat(url, "\" alt=\"").concat(tags, "\" loading=\"lazy\" width=\"369.8\" height=\"254\" />\n        <div class=\"info\">\n          <div class=\"info-item\">\n            <b class=\"label\">Likes</b>\n            <p class=\"value\">").concat(likes, "</p>\n          </div>\n          <div class=\"info-item\">\n            <b class=\"label\">Views</b>\n            <p class=\"value\">").concat(views, "</p>\n          </div>\n          <div class=\"info-item\">\n            <b class=\"label\">Comments</b>\n            <p class=\"value\">").concat(comments, "</p>\n          </div>\n          <div class=\"info-item\">\n            <b class=\"label\">Downloads</b>\n            <p class=\"value\">").concat(downloads, "</p>\n          </div>\n        </div>\n      </div>\n    </li>\n  ");
+  return "\n    <li class=\"image-item\">\n      <div class=\"photo-card\">\n        <img src=\"".concat(webformatURL, "\" alt=\"").concat(tags, "\" loading=\"lazy\" width=\"369.8\" height=\"254\" />\n        <div class=\"info\">\n          <div class=\"info-item\">\n            <b class=\"label\">Likes</b>\n            <p class=\"value\">").concat(likes, "</p>\n          </div>\n          <div class=\"info-item\">\n            <b class=\"label\">Views</b>\n            <p class=\"value\">").concat(views, "</p>\n          </div>\n          <div class=\"info-item\">\n            <b class=\"label\">Comments</b>\n            <p class=\"value\">").concat(comments, "</p>\n          </div>\n          <div class=\"info-item\">\n            <b class=\"label\">Downloads</b>\n            <p class=\"value\">").concat(downloads, "</p>\n          </div>\n        </div>\n      </div>\n    </li>\n  ");
 };
 
 var _default = getImageItem;
 exports.default = _default;
-},{}],"helpers/image.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _apiHelper = require("../api/api-helper");
-
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
-
-function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
-
-var getImagesUrls = /*#__PURE__*/function () {
-  var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(array) {
-    var images, blobArray, urls;
-    return regeneratorRuntime.wrap(function _callee$(_context) {
-      while (1) {
-        switch (_context.prev = _context.next) {
-          case 0:
-            images = array.map(function (value) {
-              return value.webformatURL;
-            });
-            _context.next = 3;
-            return (0, _apiHelper.getBlobArray)(images);
-
-          case 3:
-            blobArray = _context.sent;
-            urls = blobArray.map(function (value) {
-              return URL.createObjectURL(value.data);
-            });
-            return _context.abrupt("return", urls);
-
-          case 6:
-          case "end":
-            return _context.stop();
-        }
-      }
-    }, _callee);
-  }));
-
-  return function getImagesUrls(_x) {
-    return _ref.apply(this, arguments);
-  };
-}();
-
-var _default = getImagesUrls;
-exports.default = _default;
-},{"../api/api-helper":"api/api-helper.js"}],"index.js":[function(require,module,exports) {
+},{}],"index.js":[function(require,module,exports) {
 'use strict';
 
 require("regenerator-runtime/runtime");
@@ -3738,7 +3648,7 @@ var _apiHelper = require("./api/api-helper.js");
 
 var _imageItemTemplate = _interopRequireDefault(require("./helpers/image-item-template.js"));
 
-var _image = _interopRequireDefault(require("./helpers/image.js"));
+var _constants = require("./constants");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -3755,13 +3665,16 @@ loadMoreButton.style.display = 'none';
 var loadMoreButtonDetails = {
   page: 1
 };
+submitButton.addEventListener('keydown', function (event) {
+  if (event.key === ' ') event.preventDefault();
+});
 submitButton.addEventListener('click', function () {
-  return loadMoreButtonDetails.page = 1;
+  loadMoreButtonDetails.page = 1;
 });
 
 var submitHandler = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(event) {
-    var searchPhrase, images, hits, urls, i;
+    var searchPhrase, images, hits;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -3799,19 +3712,12 @@ var submitHandler = /*#__PURE__*/function () {
 
             loadMoreButtonDetails.page++;
             hits = images.hits;
-            _context.next = 14;
-            return (0, _image.default)(hits);
+            hits.forEach(function (value) {
+              return galleryList.innerHTML += (0, _imageItemTemplate.default)(value);
+            });
+            if (images.hits.length === _constants.PER_PAGE) loadMoreButton.style.display = 'block';
 
           case 14:
-            urls = _context.sent;
-
-            for (i = 0; i < hits.length; i++) {
-              galleryList.innerHTML += (0, _imageItemTemplate.default)(urls[i], hits[i]);
-            }
-
-            if (images.hits.length) loadMoreButton.style.display = 'block';
-
-          case 17:
           case "end":
             return _context.stop();
         }
@@ -3826,7 +3732,7 @@ var submitHandler = /*#__PURE__*/function () {
 
 loadMoreButton.addEventListener('click', submitHandler);
 form.addEventListener('submit', submitHandler);
-},{"regenerator-runtime/runtime":"../node_modules/regenerator-runtime/runtime.js","notiflix/build/notiflix-notify-aio":"../node_modules/notiflix/build/notiflix-notify-aio.js","./api/api-helper.js":"api/api-helper.js","./helpers/image-item-template.js":"helpers/image-item-template.js","./helpers/image.js":"helpers/image.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"regenerator-runtime/runtime":"../node_modules/regenerator-runtime/runtime.js","notiflix/build/notiflix-notify-aio":"../node_modules/notiflix/build/notiflix-notify-aio.js","./api/api-helper.js":"api/api-helper.js","./helpers/image-item-template.js":"helpers/image-item-template.js","./constants":"constants/index.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -3854,7 +3760,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49255" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52359" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
