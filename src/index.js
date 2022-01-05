@@ -4,7 +4,7 @@ import 'regenerator-runtime/runtime';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
 import { getImages } from './api/api-helper.js';
-import getImageItem from './helpers/image-item-template.js';
+import getImageItemContent from './template/image-item-content.js';
 import { PER_PAGE } from './constants';
 
 const form = document.getElementById('search-form');
@@ -29,7 +29,7 @@ submitButton.addEventListener('click', () => {
 const submitHandler = async event => {
   event.preventDefault();
   loadMoreButton.style.display = 'none';
-  const searchPhrase = input.value;
+  const searchPhrase = input.value.trim();
   if (!searchPhrase) {
     Notify.failure('The input cannot be empty. Please, type in what images you want to find.');
     return;
@@ -48,7 +48,12 @@ const submitHandler = async event => {
   }
   loadMoreButtonDetails.page++;
   const { hits } = images;
-  hits.forEach(value => (galleryList.innerHTML += getImageItem(value)));
+  hits.forEach(value => {
+    const listItem = document.createElement('li');
+    listItem.classList.add('image-item');
+    listItem.innerHTML = getImageItemContent(value);
+    galleryList.appendChild(listItem);
+  });
   if (images.hits.length === PER_PAGE) loadMoreButton.style.display = 'block';
 };
 
