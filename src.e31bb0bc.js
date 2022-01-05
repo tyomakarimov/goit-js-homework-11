@@ -3617,7 +3617,7 @@ var getImages = /*#__PURE__*/function () {
 }();
 
 exports.getImages = getImages;
-},{"axios":"../node_modules/axios/index.js","../constants":"constants/index.js"}],"helpers/image-item-template.js":[function(require,module,exports) {
+},{"axios":"../node_modules/axios/index.js","../constants":"constants/index.js"}],"template/image-item-content.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -3625,17 +3625,17 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var getImageItem = function getImageItem(details) {
+var getImageItemContent = function getImageItemContent(details) {
   var webformatURL = details.webformatURL,
       tags = details.tags,
       likes = details.likes,
       views = details.views,
       comments = details.comments,
       downloads = details.downloads;
-  return "\n    <li class=\"image-item\">\n      <div class=\"photo-card\">\n        <img src=\"".concat(webformatURL, "\" alt=\"").concat(tags, "\" loading=\"lazy\" width=\"369.8\" height=\"254\" />\n        <div class=\"info\">\n          <div class=\"info-item\">\n            <b class=\"label\">Likes</b>\n            <p class=\"value\">").concat(likes, "</p>\n          </div>\n          <div class=\"info-item\">\n            <b class=\"label\">Views</b>\n            <p class=\"value\">").concat(views, "</p>\n          </div>\n          <div class=\"info-item\">\n            <b class=\"label\">Comments</b>\n            <p class=\"value\">").concat(comments, "</p>\n          </div>\n          <div class=\"info-item\">\n            <b class=\"label\">Downloads</b>\n            <p class=\"value\">").concat(downloads, "</p>\n          </div>\n        </div>\n      </div>\n    </li>\n  ");
+  return "\n    <div class=\"photo-card\">\n      <img src=\"".concat(webformatURL, "\" alt=\"").concat(tags, "\" loading=\"lazy\" width=\"369.8\" height=\"254\" />\n      <div class=\"info\">\n        <div class=\"info-item\">\n          <b class=\"label\">Likes</b>\n          <p class=\"value\">").concat(likes, "</p>\n        </div>\n        <div class=\"info-item\">\n          <b class=\"label\">Views</b>\n          <p class=\"value\">").concat(views, "</p>\n        </div>\n        <div class=\"info-item\">\n          <b class=\"label\">Comments</b>\n          <p class=\"value\">").concat(comments, "</p>\n        </div>\n        <div class=\"info-item\">\n          <b class=\"label\">Downloads</b>\n          <p class=\"value\">").concat(downloads, "</p>\n        </div>\n      </div>\n    </div>\n  ");
 };
 
-var _default = getImageItem;
+var _default = getImageItemContent;
 exports.default = _default;
 },{}],"index.js":[function(require,module,exports) {
 'use strict';
@@ -3646,7 +3646,7 @@ var _notiflixNotifyAio = require("notiflix/build/notiflix-notify-aio");
 
 var _apiHelper = require("./api/api-helper.js");
 
-var _imageItemTemplate = _interopRequireDefault(require("./helpers/image-item-template.js"));
+var _imageItemContent = _interopRequireDefault(require("./template/image-item-content.js"));
 
 var _constants = require("./constants");
 
@@ -3681,7 +3681,7 @@ var submitHandler = /*#__PURE__*/function () {
           case 0:
             event.preventDefault();
             loadMoreButton.style.display = 'none';
-            searchPhrase = input.value;
+            searchPhrase = input.value.trim();
 
             if (searchPhrase) {
               _context.next = 6;
@@ -3713,7 +3713,10 @@ var submitHandler = /*#__PURE__*/function () {
             loadMoreButtonDetails.page++;
             hits = images.hits;
             hits.forEach(function (value) {
-              return galleryList.innerHTML += (0, _imageItemTemplate.default)(value);
+              var listItem = document.createElement('li');
+              listItem.classList.add('image-item');
+              listItem.innerHTML = (0, _imageItemContent.default)(value);
+              galleryList.appendChild(listItem);
             });
             if (images.hits.length === _constants.PER_PAGE) loadMoreButton.style.display = 'block';
 
@@ -3732,7 +3735,7 @@ var submitHandler = /*#__PURE__*/function () {
 
 loadMoreButton.addEventListener('click', submitHandler);
 form.addEventListener('submit', submitHandler);
-},{"regenerator-runtime/runtime":"../node_modules/regenerator-runtime/runtime.js","notiflix/build/notiflix-notify-aio":"../node_modules/notiflix/build/notiflix-notify-aio.js","./api/api-helper.js":"api/api-helper.js","./helpers/image-item-template.js":"helpers/image-item-template.js","./constants":"constants/index.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"regenerator-runtime/runtime":"../node_modules/regenerator-runtime/runtime.js","notiflix/build/notiflix-notify-aio":"../node_modules/notiflix/build/notiflix-notify-aio.js","./api/api-helper.js":"api/api-helper.js","./template/image-item-content.js":"template/image-item-content.js","./constants":"constants/index.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -3760,7 +3763,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52359" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51275" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
